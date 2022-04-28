@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -8,4 +9,4 @@ def index():
 
 @app.route("/check", methods=["POST"])
 def check():
-    return render_template("index.html")
+    return render_template("invalid.html")
