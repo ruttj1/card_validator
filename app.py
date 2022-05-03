@@ -13,26 +13,27 @@ def check():
     #TODO
         #Get card number from form as string
         #store card number as an array of strings
-        cardNumber = list(request.form.get("cardNumber"))
+        cardNumber = request.form.get("cardNumber")
         #converts string to int
         list_of_cardNumber = list(map(int, cardNumber))
         #Start at the right most position (assume that is position 0)
         #For every second position (every odd index position) (change increment)
         temp = []
+        counter = 0
         for number in reversed(list_of_cardNumber):
-            #multiply position i by 2
-            if (number % 2) != 0:
-                temp.append(cardNumber[number])
-            else: 
-                doubledValue = cardNumber[number] * 2
-                # add the first and second digit together
-                if doubledValue > 9:
-                    luhnValue = list(doubledValue)
-                    temp.append(luhnValue[0] + luhnValue[1])
-        #Add all the numbers together
-        luhnSum = 0
-        for numbers in temp:
-            luhnSum += temp[numbers]
-        if (luhnSum % 10) == 0:
-            return render_template("valid.html") 
-        return render_template("invalid.html")
+            if counter % 2 == 0:
+                temp.append(number)
+                counter += 1
+            else:
+                counter += 1
+                number = number * 2
+                if number > 9:
+                    luhnList = list(map(int, str(number)))
+                    temp.append(sum(luhnList)) 
+                else:
+                    temp.append(number)
+        luhnCard = sum(temp)
+        if luhnCard % 10 == 0:
+            return render_template("valid.html")
+        else: 
+            return render_template("invalid.html")
